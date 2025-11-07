@@ -6,7 +6,8 @@ Streamline your workflow with TaskFlow - organize tasks, track progress, and boo
 
 ## ✨ Features
 
-- ✅ JWT authentication (access + refresh tokens in HttpOnly cookies)
+- ✅ JWT authentication (tokens in localStorage + HttpOnly cookies)
+- ✅ Cross-domain authentication support (Authorization header)
 - ✅ Protected routes with automatic token refresh
 - ✅ User registration and login
 - ✅ User profile management
@@ -188,11 +189,16 @@ Response: 200 OK
     "email": "john@example.com",
     "role": "user",
     "createdAt": "..."
-  }
+  },
+  "accessToken": "eyJhbGc...",
+  "refreshToken": "eyJhbGc..."
 }
 ```
 
-Sets cookies: `access_token` (15m), `refresh_token` (7d)
+**Authentication methods:**
+- Tokens returned in response body (stored in localStorage by client)
+- Also sets HttpOnly cookies: `access_token` (15m), `refresh_token` (7d)
+- API accepts tokens via `Authorization: Bearer <token>` header OR cookies
 
 #### Login
 ```http
