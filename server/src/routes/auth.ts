@@ -51,6 +51,8 @@ router.post('/register', async (req, res, next) => {
         role: user.role,
         createdAt: user.createdAt,
       },
+      accessToken,
+      refreshToken,
     });
   } catch (error) {
     next(error);
@@ -103,6 +105,8 @@ router.post('/login', async (req, res, next) => {
         role: user.role,
         createdAt: user.createdAt,
       },
+      accessToken,
+      refreshToken,
     });
   } catch (error) {
     next(error);

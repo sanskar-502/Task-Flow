@@ -24,7 +24,15 @@ function getCookieOptions() {
 }
 
 export function authMiddleware(req: AuthRequest, res: Response, next: NextFunction) {
-  const accessToken = req.cookies.access_token;
+  // Check Authorization header first (for cross-domain)
+  const authHeader = req.headers.authorization;
+  let accessToken = authHeader?.startsWith('Bearer ') ? authHeader.substring(7) : undefined;
+  
+  // Fallback to cookies (for same-domain)
+  if (!accessToken) {
+    accessToken = req.cookies.access_token;
+  }
+  
   const refreshToken = req.cookies.refresh_token;
 
   if (!accessToken) {

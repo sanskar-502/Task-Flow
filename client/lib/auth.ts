@@ -20,17 +20,29 @@ export interface Task {
 }
 
 export async function register(data: RegisterInput) {
-  const response = await api.post<{ user: User }>('/auth/register', data)
+  const response = await api.post<{ user: User; accessToken: string; refreshToken: string }>('/auth/register', data)
+  if (typeof window !== 'undefined') {
+    localStorage.setItem('access_token', response.data.accessToken)
+    localStorage.setItem('refresh_token', response.data.refreshToken)
+  }
   return response.data
 }
 
 export async function login(data: LoginInput) {
-  const response = await api.post<{ user: User }>('/auth/login', data)
+  const response = await api.post<{ user: User; accessToken: string; refreshToken: string }>('/auth/login', data)
+  if (typeof window !== 'undefined') {
+    localStorage.setItem('access_token', response.data.accessToken)
+    localStorage.setItem('refresh_token', response.data.refreshToken)
+  }
   return response.data
 }
 
 export async function logout() {
   const response = await api.post('/auth/logout')
+  if (typeof window !== 'undefined') {
+    localStorage.removeItem('access_token')
+    localStorage.removeItem('refresh_token')
+  }
   return response.data
 }
 
